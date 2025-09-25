@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Oswald:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Oswald:wght@400;500;600;700&family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@400;500;700;800;900&family=Exo+2:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         /* --- CONFIGURAÇÕES GLOBAIS E VARIÁVEIS DE TEMA VALORANT --- */
@@ -47,7 +47,8 @@
         
         /* --- ESTILO BASE E FUNDO VALORANT OTIMIZADO --- */
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter', 'Rajdhani', sans-serif;
+            font-weight: 400;
             background-color: var(--theme-darker);
             background-image: 
                 linear-gradient(rgba(15, 20, 25, 0.85), rgba(15, 20, 25, 0.85)),
@@ -66,7 +67,25 @@
         
         /* --- FONTES PERSONALIZADAS --- */
         .valorant-font { 
-            font-family: 'Oswald', sans-serif; 
+            font-family: 'Orbitron', 'Oswald', sans-serif; 
+            font-weight: 700;
+            letter-spacing: 1.5px;
+        }
+        
+        .tech-font {
+            font-family: 'Rajdhani', 'Inter', sans-serif;
+            font-weight: 600;
+        }
+        
+        .gaming-font {
+            font-family: 'Exo 2', 'Inter', sans-serif;
+            font-weight: 500;
+        }
+        
+        .cyber-font {
+            font-family: 'Orbitron', monospace;
+            font-weight: 500;
+            letter-spacing: 0.5px;
         }
 
         /* --- SCROLLBAR CUSTOMIZADA --- */
@@ -131,10 +150,11 @@
                 inset 0 1px 0 rgba(255, 255, 255, 0.2),
                 inset 0 -1px 0 rgba(0, 0, 0, 0.2);
             border: 2px solid var(--theme-primary);
-            font-family: 'Oswald', sans-serif;
+            font-family: 'Rajdhani', 'Oswald', sans-serif;
             letter-spacing: 2px;
             text-transform: uppercase;
             font-weight: 700;
+            font-size: 1.1rem;
         }
         .spin-button::before {
             content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
@@ -347,12 +367,7 @@
         .agent-selector-item.selected .checkbox { background: var(--theme-primary); border-color: var(--theme-primary); }
         .agent-selector-item.selected .checkbox i { opacity: 1; transform: scale(1); }
         .agent-selector-item .checkbox i { font-size: 10px; color: white; opacity: 0; transform: scale(0.5); transition: all 0.2s; }
-        #loading-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(10, 15, 29, 0.95); z-index: 9999;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            transition: opacity 0.3s ease; backdrop-filter: blur(5px);
-        }
+        
         .agent-card-enhanced {
             position: relative; width: 100%; border-radius: 1rem; overflow: hidden;
             background-size: cover; background-position: center; border: 2px solid var(--theme-border);
@@ -434,8 +449,8 @@
             position: relative; display: flex; align-items: center; justify-content: center;
             padding: 0.75rem 1.5rem; background: rgba(15, 20, 25, 0.8); color: var(--theme-text-secondary);
             border: 2px solid var(--theme-border); border-radius: 8px;
-            font-weight: 700; font-size: 0.9rem; cursor: pointer; font-family: 'Oswald', sans-serif;
-            transition: all 0.2s ease; letter-spacing: 1px;
+            font-weight: 600; font-size: 0.9rem; cursor: pointer; font-family: 'Exo 2', 'Rajdhani', sans-serif;
+            transition: all 0.2s ease; letter-spacing: 0.8px; text-transform: uppercase;
         }
         .category-tab:hover {
             background: rgba(51, 65, 85, 0.9); color: var(--theme-text-primary);
@@ -515,33 +530,101 @@
         
         /* --- EFEITOS DE CARREGAMENTO VALORANT --- */
         #loading-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100vw; 
+            height: 100vh;
             background: 
                 linear-gradient(135deg, rgba(15, 20, 25, 0.98), rgba(31, 35, 38, 0.95)),
                 radial-gradient(circle at 50% 50%, rgba(255, 70, 85, 0.1), transparent 50%);
-            z-index: 9999;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            transition: opacity 0.3s ease; backdrop-filter: blur(10px);
+            z-index: 99999;
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center;
+            transition: opacity 0.3s ease; 
+            backdrop-filter: blur(10px);
+            opacity: 1;
+            visibility: visible;
         }
-        #loading-overlay i {
-            color: var(--valorant-red);
-            text-shadow: 0 0 20px var(--valorant-red);
-            animation: loadingSpin 1s linear infinite, glowPulse 2s ease-in-out infinite;
+        #loading-overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
         }
-        #loading-overlay p {
+        
+        .loading-spinner {
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .css-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255, 70, 85, 0.2);
+            border-top: 4px solid var(--valorant-red);
+            border-radius: 50%;
+            animation: cssSpinRotate 1s linear infinite;
+            box-shadow: 
+                0 0 20px rgba(255, 70, 85, 0.3),
+                inset 0 0 20px rgba(255, 70, 85, 0.1);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .css-spinner::before {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(0, 212, 245, 0.2);
+            border-top: 3px solid var(--valorant-cyan);
+            border-radius: 50%;
+            animation: cssSpinRotate 0.8s linear infinite reverse;
+        }
+        
+        .button-css-spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: cssSpinRotate 1s linear infinite;
+            margin-right: 0.75rem;
+            display: inline-block;
+        }
+        
+        .loading-text {
             color: var(--theme-text-primary);
-            font-family: 'Oswald', sans-serif;
-            letter-spacing: 2px;
+            font-family: 'Rajdhani', 'Oswald', sans-serif;
+            letter-spacing: 3px;
             text-transform: uppercase;
-            font-weight: 600;
+            font-weight: 700;
+            font-size: 1.5rem;
+            text-shadow: 0 0 10px rgba(255, 70, 85, 0.5);
+            animation: textPulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes cssSpinRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
         @keyframes loadingSpin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
         @keyframes glowPulse {
-            0%, 100% { text-shadow: 0 0 20px var(--valorant-red); }
-            50% { text-shadow: 0 0 40px var(--valorant-red), 0 0 60px var(--valorant-red); }
+            0%, 100% { text-shadow: 0 0 20px var(--valorant-red), 0 0 40px var(--valorant-red); }
+            50% { text-shadow: 0 0 40px var(--valorant-red), 0 0 60px var(--valorant-red), 0 0 80px var(--valorant-red); }
+        }
+        @keyframes textPulse {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
         }
         
         /* --- SEÇÃO HISTÓRICO DE SORTEIOS --- */
@@ -604,8 +687,10 @@
 <body class="text-white flex flex-col items-center p-4 relative">
     
     <div id="loading-overlay">
-        <i class="fas fa-spinner fa-spin text-5xl text-red-500 mb-4"></i>
-        <p class="text-lg text-slate-300">A carregar agentes...</p>
+        <div class="loading-spinner">
+            <div class="css-spinner"></div>
+        </div>
+        <p class="loading-text">CARREGANDO AGENTES...</p>
     </div>
 
     <div class="text-center w-full max-w-none mx-auto relative z-10 px-2">
@@ -645,18 +730,21 @@
         <footer class="mt-3 mb-6">
             <button id="spin-button" class="spin-button disabled:from-slate-700 disabled:to-slate-800 disabled:cursor-not-allowed text-white font-bold py-4 px-10 rounded-full text-xl transition-all duration-300 transform hover:scale-105 flex items-center justify-center mx-auto pulse">
                 <span id="button-text" class="flex items-center"><i class="fas fa-sync-alt mr-3"></i> SORTEAR TODOS OS AGENTES</span>
-                <span id="button-spinner" class="hidden flex items-center"><i class="fas fa-spinner fa-spin mr-3"></i> GIRANDO...</span>
+                <span id="button-spinner" class="hidden flex items-center">
+                    <div class="button-css-spinner"></div>
+                    GIRANDO...
+                </span>
             </button>
         </footer>
         
         <section id="agent-selection-section" class="w-full bg-slate-900/50 p-2 sm:p-4 rounded-xl mt-8 agent-selection-container">
             <div class="flex flex-col sm:flex-row justify-between items-center mb-4">
-                <h3 class="text-2xl font-bold valorant-font text-slate-200 mb-4 sm:mb-0">ESCOLHA OS AGENTES</h3>
+                <h3 class="text-2xl font-bold valorant-font text-slate-200 mb-4 sm:mb-0 cyber-font">ESCOLHA OS AGENTES</h3>
                 <div class="flex space-x-2">
-                    <button id="select-all-btn" class="valorant-action-btn bg-gradient-to-r from-valorant-green to-valorant-cyan text-white font-semibold py-2 px-4 rounded-md text-sm transition-all duration-300 flex items-center border border-valorant-green hover:shadow-lg hover:shadow-valorant-green/25">
+                    <button id="select-all-btn" class="valorant-action-btn gaming-font bg-gradient-to-r from-valorant-green to-valorant-cyan text-white font-semibold py-2 px-4 rounded-md text-sm transition-all duration-300 flex items-center border border-valorant-green hover:shadow-lg hover:shadow-valorant-green/25">
                         <i class="fas fa-check-double mr-2"></i>Todos
                     </button>
-                    <button id="deselect-all-btn" class="valorant-action-btn bg-gradient-to-r from-valorant-red to-valorant-orange text-white font-semibold py-2 px-4 rounded-md text-sm transition-all duration-300 flex items-center border border-valorant-red hover:shadow-lg hover:shadow-valorant-red/25">
+                    <button id="deselect-all-btn" class="valorant-action-btn gaming-font bg-gradient-to-r from-valorant-red to-valorant-orange text-white font-semibold py-2 px-4 rounded-md text-sm transition-all duration-300 flex items-center border border-valorant-red hover:shadow-lg hover:shadow-valorant-red/25">
                         <i class="fas fa-times mr-2"></i>Nenhum
                     </button>
                 </div>
@@ -699,7 +787,7 @@
         <section id="agent-history-section" class="w-full bg-slate-800/40 p-2 sm:p-4 rounded-xl mt-6">
             <div class="flex justify-between items-center mb-4">
                 <div class="flex items-center gap-3">
-                    <h3 class="text-2xl font-bold valorant-font text-slate-200">📊 HISTÓRICO DE SORTEIOS</h3>
+                    <h3 class="text-2xl font-bold valorant-font text-slate-200 cyber-font">📊 HISTÓRICO DE SORTEIOS</h3>
                     <span id="history-count" class="bg-slate-700 text-white px-2 py-1 rounded-full text-sm font-semibold">0</span>
                 </div>
                 <button id="clear-history" class="bg-red-600/80 hover:bg-red-600 text-white px-3 py-1.5 rounded-lg text-sm font-semibold transition-all duration-200 opacity-0 invisible" title="Limpar histórico">
@@ -1208,14 +1296,21 @@
                 rouletteSection.classList.remove('hidden');
 
                 const itemWidth = 160;
-                const repetitionCount = 5;
+                // SEMPRE criar uma roleta com tamanho fixo para velocidade consistente
+                const fixedRouletteSize = 60; // Tamanho fixo independente do número de agentes
                 let rouletteItems = [];
-                for (let i = 0; i < repetitionCount; i++) {
-                    rouletteItems.push(...[...availableAgents].sort(() => Math.random() - 0.5));
+                
+                // Preencher a roleta até atingir o tamanho fixo, repetindo os agentes disponíveis
+                while (rouletteItems.length < fixedRouletteSize) {
+                    const shuffledAgents = [...availableAgents].sort(() => Math.random() - 0.5);
+                    rouletteItems.push(...shuffledAgents);
                 }
+                // Cortar para o tamanho exato
+                rouletteItems = rouletteItems.slice(0, fixedRouletteSize);
                 
                 const winner = availableAgents[Math.floor(Math.random() * availableAgents.length)];
-                const winnerIndex = rouletteItems.length - Math.floor(availableAgents.length / 2) - 1;
+                // Posição fixa do vencedor para velocidade consistente (sempre na mesma região)
+                const winnerIndex = Math.floor(fixedRouletteSize * 0.75); // 75% da roleta
                 rouletteItems[winnerIndex] = winner;
                 
                 rouletteTrack.innerHTML = rouletteItems.map(agent => {
@@ -1238,26 +1333,41 @@
                     `;
                 }).join('');
 
-                const randomOffset = (Math.random() - 0.5) * (itemWidth * 0.8);
-                const finalPosition = -(winnerIndex * itemWidth - (rouletteSection.clientWidth / 2) + (itemWidth / 2) + randomOffset);
+                // Posição final SEMPRE consistente para mesma velocidade
+                const standardDistance = fixedRouletteSize * itemWidth * 0.75; // Distância fixa
+                const randomOffset = (Math.random() - 0.5) * (itemWidth * 0.4); // Pequena variação aleatória
+                const finalPosition = -(standardDistance + randomOffset - (rouletteSection.clientWidth / 2) + (itemWidth / 2));
 
                 rouletteTrack.style.transition = 'none';
                 rouletteTrack.style.transform = 'translateX(0)';
                 
                 let lastCenteredAgentUUID = null;
+                let animationStartTime = Date.now();
+                const animationDuration = 7000;
+                const marginTime = 500; // Voltando para margem menor já que agora é consistente
+                
                 function liveThemeUpdater() {
+                    const currentTime = Date.now();
+                    const elapsedTime = currentTime - animationStartTime;
+                    
+                    if (elapsedTime >= animationDuration + marginTime) {
+                        return;
+                    }
+                    
                     const currentTransform = new DOMMatrix(getComputedStyle(rouletteTrack).transform);
                     const currentX = currentTransform.m41;
                     const centerOffset = rouletteSection.clientWidth / 2 - itemWidth / 2;
-                    const centeredIndex = Math.round((Math.abs(currentX) + centerOffset) / itemWidth);
+                    let centeredIndex = Math.round((Math.abs(currentX) + centerOffset) / itemWidth);
                     
-                    if (centeredIndex >= 0 && centeredIndex < rouletteItems.length) {
-                        const centeredAgent = rouletteItems[centeredIndex];
-                        if (centeredAgent && centeredAgent.uuid !== lastCenteredAgentUUID) {
-                            updateTheme(centeredAgent, true); // Transição rápida durante o giro
-                            lastCenteredAgentUUID = centeredAgent.uuid;
-                        }
+                    // Com tamanho fixo, o controle de índice fica mais simples
+                    centeredIndex = Math.max(0, Math.min(centeredIndex, fixedRouletteSize - 1));
+                    
+                    const centeredAgent = rouletteItems[centeredIndex];
+                    if (centeredAgent && centeredAgent.uuid !== lastCenteredAgentUUID) {
+                        updateTheme(centeredAgent, true);
+                        lastCenteredAgentUUID = centeredAgent.uuid;
                     }
+                    
                     animationFrameId = requestAnimationFrame(liveThemeUpdater);
                 }
 
@@ -1268,14 +1378,16 @@
                 }, 20);
 
                 setTimeout(() => {
-                    cancelAnimationFrame(animationFrameId);
+                    if (animationFrameId) {
+                        cancelAnimationFrame(animationFrameId);
+                    }
                     rouletteSection.classList.add('hidden');
                     displayAgent(winner);
                     
                     spinButton.disabled = false;
                     buttonText.classList.remove('hidden');
                     buttonSpinner.classList.add('hidden');
-                }, 7000);
+                }, 7500); // 7.5 segundos
             }
             
             // --- EVENT LISTENERS OTIMIZADOS ---
@@ -1348,6 +1460,7 @@
             // --- INICIALIZAÇÃO OTIMIZADA ---
             async function initialize() {
                 // Mostrar loading
+                loadingOverlay.classList.remove('hidden');
                 loadingOverlay.style.display = 'flex';
                 
                 try {
@@ -1368,10 +1481,12 @@
                     console.error('Erro na inicialização:', error);
                 } finally {
                     // Ocultar loading com transição suave
-                    loadingOverlay.style.opacity = '0';
                     setTimeout(() => {
-                        loadingOverlay.style.display = 'none';
-                    }, 300);
+                        loadingOverlay.classList.add('hidden');
+                        setTimeout(() => {
+                            loadingOverlay.style.display = 'none';
+                        }, 300); // Aguarda a transição de opacity
+                    }, 500); // Delay mínimo para mostrar o loading
                 }
             }
 
