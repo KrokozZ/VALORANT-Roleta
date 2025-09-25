@@ -50,8 +50,12 @@
             font-family: 'Inter', sans-serif;
             background-color: var(--theme-darker);
             background-image: 
-                radial-gradient(circle at 20% 50%, rgba(255, 70, 85, 0.05) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(0, 212, 245, 0.03) 0%, transparent 50%);
+                linear-gradient(rgba(15, 20, 25, 0.85), rgba(15, 20, 25, 0.85)),
+                url('https://wallpapercave.com/wp/wp9724292.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
             min-height: 100vh;
             transition: background-color 0.8s ease;
             position: relative;
@@ -99,7 +103,7 @@
         .main-header {
             position: relative;
             margin-bottom: 1.5rem;
-            padding: 1.5rem 0;
+            padding: 0.5rem 0;
         }
         .main-header::before {
             display: none;
@@ -171,7 +175,7 @@
         }
         /* --- ROLETA VALORANT OTIMIZADA --- */
         .roulette-container {
-            position: relative; width: 100%; max-width: 90vw; height: 180px; margin: 1rem auto; overflow: hidden;
+            position: relative; width: 100%; max-width: 98vw; height: 180px; margin: 1rem auto; overflow: hidden;
             border: 2px solid var(--theme-primary);
             border-radius: 8px;
             background: rgba(15, 20, 25, 0.95);
@@ -278,8 +282,29 @@
             background: var(--gradient-primary);
             box-shadow: 0 0 10px var(--valorant-red);
         }
-        .agent-selector-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 1rem; }
-        @media (max-width: 639px) { .agent-selector-grid { grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)); gap: 0.75rem; } }
+        .agent-selector-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(75px, 1fr)); 
+            gap: 0.5rem; 
+        }
+        @media (min-width: 640px) { 
+            .agent-selector-grid { 
+                grid-template-columns: repeat(auto-fill, minmax(85px, 1fr)); 
+                gap: 0.75rem; 
+            } 
+        }
+        @media (min-width: 1024px) { 
+            .agent-selector-grid { 
+                grid-template-columns: repeat(auto-fill, minmax(95px, 1fr)); 
+                gap: 1rem; 
+            } 
+        }
+        @media (min-width: 1280px) { 
+            .agent-selector-grid { 
+                grid-template-columns: repeat(auto-fill, minmax(105px, 1fr)); 
+                gap: 1.25rem; 
+            } 
+        }
         .agent-selector-item {
             position: relative; cursor: pointer; border: 2px solid var(--theme-border);
             border-radius: 0.5rem; overflow: hidden; transition: transform 0.2s ease, border-color 0.2s ease; 
@@ -518,6 +543,62 @@
             0%, 100% { text-shadow: 0 0 20px var(--valorant-red); }
             50% { text-shadow: 0 0 40px var(--valorant-red), 0 0 60px var(--valorant-red); }
         }
+        
+        /* --- SEÇÃO HISTÓRICO DE SORTEIOS --- */
+        .history-item {
+            position: relative;
+            border: 2px solid var(--theme-border);
+            border-radius: 8px;
+            overflow: hidden;
+            background: rgba(15, 23, 42, 0.8);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .history-item:hover {
+            transform: scale(1.05);
+            border-color: var(--theme-primary);
+            box-shadow: 0 0 15px var(--theme-shadow-glow);
+        }
+        .history-item img {
+            width: 100%;
+            height: 80px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        .history-item:hover img {
+            transform: scale(1.1);
+        }
+        .history-item .overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            padding: 0.5rem 0.25rem 0.25rem;
+            text-align: center;
+        }
+        .history-item .name {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--agent-text-color, var(--theme-text-primary));
+            text-shadow: 0 0 6px var(--agent-text-color, var(--theme-primary));
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .history-item .timestamp {
+            font-size: 0.6rem;
+            color: var(--theme-text-secondary);
+            opacity: 0.8;
+            margin-top: 1px;
+        }
+        #clear-history {
+            transition: all 0.3s ease;
+        }
+        #clear-history.visible {
+            opacity: 1;
+            visibility: visible;
+        }
     </style>
 </head>
 <body class="text-white flex flex-col items-center p-4 relative">
@@ -527,8 +608,8 @@
         <p class="text-lg text-slate-300">A carregar agentes...</p>
     </div>
 
-    <div class="text-center w-full max-w-6xl mx-auto relative z-10">
-        <header class="mb-6 mt-4 main-header">
+    <div class="text-center w-full max-w-none mx-auto relative z-10 px-2">
+        <header class="mb-6 mt-1 main-header">
             <div class="valorant-logo">
                 <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold text-transparent bg-clip-text tracking-tight valorant-font mb-2 header-gradient">
                     <i class="fas fa-crosshairs mr-3"></i>ROLETA DE AGENTES
@@ -543,7 +624,7 @@
         </header>
 
         <main id="agent-display" class="w-full flex items-center justify-center my-4 min-h-[45vh] md:min-h-[500px] relative">
-            <div id="initial-state" class="text-center p-6 border-2 border-slate-700 rounded-xl bg-slate-800/30 backdrop-blur-sm w-full max-w-lg transition-all duration-300">
+            <div id="initial-state" class="text-center p-6 border-2 border-slate-700 rounded-xl bg-slate-800/30 backdrop-blur-sm w-full max-w-5xl transition-all duration-300">
                 <div class="inline-block p-4 rounded-full bg-slate-800/50 mb-5">
                     <i class="fas fa-question text-4xl text-slate-400"></i>
                 </div>
@@ -568,7 +649,7 @@
             </button>
         </footer>
         
-        <section id="agent-selection-section" class="w-full bg-slate-900/50 p-4 sm:p-6 rounded-xl mt-8 agent-selection-container">
+        <section id="agent-selection-section" class="w-full bg-slate-900/50 p-2 sm:p-4 rounded-xl mt-8 agent-selection-container">
             <div class="flex flex-col sm:flex-row justify-between items-center mb-4">
                 <h3 class="text-2xl font-bold valorant-font text-slate-200 mb-4 sm:mb-0">ESCOLHA OS AGENTES</h3>
                 <div class="flex space-x-2">
@@ -613,10 +694,38 @@
                 Agentes selecionados: <span id="counter-value" class="font-bold text-white">0</span>
             </div>
         </section>
+
+        <!-- SEÇÃO HISTÓRICO DE AGENTES SORTEADOS -->
+        <section id="agent-history-section" class="w-full bg-slate-800/40 p-2 sm:p-4 rounded-xl mt-6">
+            <div class="flex justify-between items-center mb-4">
+                <div class="flex items-center gap-3">
+                    <h3 class="text-2xl font-bold valorant-font text-slate-200">📊 HISTÓRICO DE SORTEIOS</h3>
+                    <span id="history-count" class="bg-slate-700 text-white px-2 py-1 rounded-full text-sm font-semibold">0</span>
+                </div>
+                <button id="clear-history" class="bg-red-600/80 hover:bg-red-600 text-white px-3 py-1.5 rounded-lg text-sm font-semibold transition-all duration-200 opacity-0 invisible" title="Limpar histórico">
+                    <i class="fas fa-trash-alt mr-1"></i> Limpar
+                </button>
+            </div>
+            
+            <div id="history-container" class="hidden">
+                <div id="agent-history-grid" class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-2 max-h-[300px] overflow-y-auto custom-scrollbar p-1">
+                </div>
+            </div>
+            
+            <div id="history-empty" class="text-center py-8 text-slate-400">
+                <i class="fas fa-history text-4xl mb-3 opacity-50"></i>
+                <p class="text-lg font-medium">Nenhum sorteio realizado ainda</p>
+                <p class="text-sm">Os agentes sorteados aparecerão aqui</p>
+            </div>
+        </section>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // Histórico de sorteios
+            let agentHistory = JSON.parse(localStorage.getItem('valorantAgentHistory') || '[]');
+            const maxHistorySize = 50; // Máximo de 50 sorteios no histórico
+            
             // --- ELEMENTOS DOM ---
             const root = document.documentElement;
             const spinButton = document.getElementById('spin-button');
@@ -632,6 +741,14 @@
             const selectAllBtn = document.getElementById('select-all-btn');
             const deselectAllBtn = document.getElementById('deselect-all-btn');
             const loadingOverlay = document.getElementById('loading-overlay');
+            
+            // Elementos do histórico
+            const historySection = document.getElementById('agent-history-section');
+            const historyContainer = document.getElementById('history-container');
+            const historyGrid = document.getElementById('agent-history-grid');
+            const historyEmpty = document.getElementById('history-empty');
+            const historyCount = document.getElementById('history-count');
+            const clearHistoryBtn = document.getElementById('clear-history');
 
             // --- ESTADO DA APLICAÇÃO ---
             let allAgents = [];
@@ -673,6 +790,87 @@
                     scroll.style.setProperty('--theme-scrollbar-thumb', primaryColor);
                     scroll.style.setProperty('--theme-scrollbar-thumb-hover', secondaryColor);
                 });
+            }
+
+            // --- FUNÇÕES DO HISTÓRICO ---
+            function addToHistory(agent) {
+                const historyItem = {
+                    agent: agent,
+                    timestamp: new Date().toLocaleString('pt-BR', {
+                        day: '2-digit',
+                        month: '2-digit',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    }),
+                    id: Date.now()
+                };
+                
+                // Adiciona no início do array
+                agentHistory.unshift(historyItem);
+                
+                // Limita o tamanho do histórico
+                if (agentHistory.length > maxHistorySize) {
+                    agentHistory = agentHistory.slice(0, maxHistorySize);
+                }
+                
+                // Salva no localStorage
+                localStorage.setItem('valorantAgentHistory', JSON.stringify(agentHistory));
+                
+                // Atualiza a interface
+                renderHistory();
+            }
+            
+            function renderHistory() {
+                historyCount.textContent = agentHistory.length;
+                
+                if (agentHistory.length === 0) {
+                    historyContainer.classList.add('hidden');
+                    historyEmpty.classList.remove('hidden');
+                    clearHistoryBtn.classList.remove('visible');
+                    return;
+                }
+                
+                historyContainer.classList.remove('hidden');
+                historyEmpty.classList.add('hidden');
+                clearHistoryBtn.classList.add('visible');
+                
+                // Renderizar itens do histórico
+                const fragment = document.createDocumentFragment();
+                
+                agentHistory.forEach(item => {
+                    const historyItem = document.createElement('div');
+                    historyItem.className = 'history-item';
+                    
+                    // Aplicar cor específica do agente
+                    if (item.agent.backgroundGradientColors && item.agent.backgroundGradientColors.length > 0) {
+                        const agentColor = toPureHex(item.agent.backgroundGradientColors[0]);
+                        historyItem.style.setProperty('--agent-text-color', agentColor);
+                    }
+                    
+                    historyItem.innerHTML = `
+                        <img src="${item.agent.displayIcon}" alt="${item.agent.displayName}" loading="lazy">
+                        <div class="overlay">
+                            <div class="name">${item.agent.displayName}</div>
+                            <div class="timestamp">${item.timestamp}</div>
+                        </div>
+                    `;
+                    
+                    // Tooltip com informações do agente
+                    historyItem.title = `${item.agent.displayName} - ${item.agent.role.displayName}\\nSorteado em: ${item.timestamp}`;
+                    
+                    fragment.appendChild(historyItem);
+                });
+                
+                historyGrid.innerHTML = '';
+                historyGrid.appendChild(fragment);
+            }
+            
+            function clearHistory() {
+                if (agentHistory.length === 0) return;
+                
+                agentHistory = [];
+                localStorage.removeItem('valorantAgentHistory');
+                renderHistory();
             }
 
             // --- FUNÇÕES PRINCIPAIS ---
@@ -922,6 +1120,9 @@
             }
 
             function displayAgent(agent) {
+                // Adicionar ao histórico
+                addToHistory(agent);
+                
                 const displayAbilities = agent.abilities.filter(ability => ability.displayIcon);
                 updateTheme(agent, false); // Transição lenta para o resultado final
                 
@@ -1130,6 +1331,7 @@
             spinButton.addEventListener('click', spinRoulette);
             selectAllBtn.addEventListener('click', throttledSelectAll, { passive: true });
             deselectAllBtn.addEventListener('click', throttledDeselectAll, { passive: true });
+            clearHistoryBtn.addEventListener('click', clearHistory);
             
             // Event listeners para as abas de categoria com delegação de eventos
             document.addEventListener('click', (e) => {
@@ -1157,6 +1359,7 @@
                         requestAnimationFrame(() => {
                             updateCategoryTabs(); // Atualizar contadores das abas
                             debouncedRender(); // Usar versão otimizada
+                            renderHistory(); // Renderizar histórico inicial
                             resolve();
                         });
                     });
