@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roleta de Agentes de Valorant</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Oswald:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* --- CONFIGURAÇÕES GLOBAIS E VARIÁVEIS DE TEMA VALORANT --- */
+        :root {
+            /* Cores Oficiais VALORANT */
+            --valorant-red: #ff4655;
+            --valorant-dark-blue: #0f1419;
+            --valorant-darker-blue: #0a0e13;
+            --valorant-light-blue: #1f2326;
+            --valorant-cyan: #00d4f5;
+            --valorant-gold: #f0c040;
+            --valorant-purple: #9d4dff;
+            --valorant-green: #00ff88;
+            --valorant-orange: #ff8c00;
+            --valorant-pink: #ff6bbf;
+            
+            /* Tema Dinâmico VALORANT */
+            --theme-primary: var(--valorant-red);
+            --theme-secondary: var(--valorant-cyan);
+            --theme-accent: var(--valorant-gold);
+            --theme-dark: var(--valorant-dark-blue);
+            --theme-darker: var(--valorant-darker-blue);
+            --theme-light: var(--valorant-light-blue);
+            --theme-text-primary: #ece8e1;
+            --theme-text-secondary: #9ca3af;
+            --theme-border: #334155;
+            --theme-shadow-glow: rgba(255, 70, 85, 0.6);
+            --theme-scrollbar-thumb: #475569;
+            --theme-scrollbar-thumb-hover: #64748b;
+            
+            /* Gradientes VALORANT */
+            --gradient-primary: linear-gradient(135deg, var(--valorant-red) 0%, var(--valorant-orange) 100%);
+            --gradient-secondary: linear-gradient(135deg, var(--valorant-cyan) 0%, var(--valorant-purple) 100%);
+            --gradient-accent: linear-gradient(135deg, var(--valorant-gold) 0%, var(--valorant-orange) 100%);
+            --gradient-danger: linear-gradient(135deg, var(--valorant-red) 0%, #dc2626 100%);
+        }
+        
+        /* --- ESTILO BASE E FUNDO VALORANT OTIMIZADO --- */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--theme-darker);
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(255, 70, 85, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(0, 212, 245, 0.03) 0%, transparent 50%);
+            min-height: 100vh;
+            transition: background-color 0.8s ease;
+            position: relative;
+        }
+        
+        /* Remover overlay pesado de partículas */
+        body::before { display: none; }
+        
+        /* --- FONTES PERSONALIZADAS --- */
+        .valorant-font { 
+            font-family: 'Oswald', sans-serif; 
+        }
+
+        /* --- SCROLLBAR CUSTOMIZADA --- */
+        .custom-scrollbar::-webkit-scrollbar { width: 8px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(30, 41, 59, 0.5); border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { 
+            background-color: var(--theme-scrollbar-thumb); 
+            border-radius: 4px; 
+            transition: background-color 0.8s ease; 
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background-color: var(--theme-scrollbar-thumb-hover); }
+        
+        /* --- ANIMAÇÕES E EFEITOS OTIMIZADOS --- */
+        @keyframes fadeIn { 
+            from { opacity: 0; transform: translate3d(0, 10px, 0); } 
+            to { opacity: 1; transform: translate3d(0, 0, 0); } 
+        }
+        @keyframes card-enter { 
+            0% { transform: scale3d(0.8, 0.8, 1) translate3d(0, 20px, 0); opacity: 0; } 
+            100% { transform: scale3d(1, 1, 1) translate3d(0, 0, 0); opacity: 1; } 
+        }
+        .card-enter-animation { 
+            animation: card-enter 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both; 
+            will-change: transform, opacity;
+        }
+        @keyframes pulse { 
+            0% { box-shadow: 0 0 0 0 var(--theme-shadow-glow); } 
+            70% { box-shadow: 0 0 0 10px rgba(255, 70, 85, 0); } 
+            100% { box-shadow: 0 0 0 0 rgba(255, 70, 85, 0); } 
+        }
+        .pulse { animation: pulse 2s infinite; will-change: box-shadow; }
+        
+        /* --- HEADER VALORANT OTIMIZADO --- */
+        .main-header {
+            position: relative;
+            margin-bottom: 1.5rem;
+            padding: 1.5rem 0;
+        }
+        .main-header::before {
+            display: none;
+        }
+        .main-header h1 { 
+            text-shadow: 0 0 20px var(--theme-primary);
+            transition: text-shadow 0.8s ease; 
+            position: relative;
+            z-index: 2;
+        }
+        .header-gradient { 
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+        }
+        /* Remover animação pesada do logo */
+        .valorant-logo::before { display: none; }
+        /* --- BOTÃO VALORANT ESTILIZADO --- */
+        .spin-button {
+            position: relative; overflow: hidden; transition: all 0.3s ease;
+            background: var(--gradient-primary);
+            box-shadow: 
+                0 0 20px var(--theme-shadow-glow),
+                0 8px 32px rgba(255, 70, 85, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+            border: 2px solid var(--theme-primary);
+            font-family: 'Oswald', sans-serif;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+        .spin-button::before {
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: 0.6s;
+        }
+        .spin-button::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: calc(100% - 8px);
+            height: calc(100% - 8px);
+            background: linear-gradient(135deg, transparent, rgba(0, 212, 245, 0.1), transparent);
+            border-radius: inherit;
+            z-index: -1;
+        }
+        .spin-button:hover {
+            box-shadow: 
+                0 0 30px var(--theme-shadow-glow),
+                0 12px 48px rgba(255, 70, 85, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px) scale(1.02);
+        }
+        .spin-button:hover::before { left: 100%; }
+        .spin-button:active {
+            transform: translateY(0) scale(0.98);
+            box-shadow: 
+                0 0 15px var(--theme-shadow-glow),
+                0 4px 16px rgba(255, 70, 85, 0.3);
+        }
+        .spin-button.disabled {
+            background: linear-gradient(135deg, #374151, #4b5563);
+            border-color: #6b7280;
+            box-shadow: none;
+            cursor: not-allowed;
+        }
+        /* --- ROLETA VALORANT OTIMIZADA --- */
+        .roulette-container {
+            position: relative; width: 100%; max-width: 90vw; height: 180px; margin: 1rem auto; overflow: hidden;
+            border: 2px solid var(--theme-primary);
+            border-radius: 8px;
+            background: rgba(15, 20, 25, 0.95);
+            box-shadow: 0 0 30px var(--theme-shadow-glow);
+            transition: box-shadow 0.8s ease;
+        }
+        /* Remover animação de borda pesada */
+        .roulette-container::before { display: none; }
+        @media (min-width: 640px) { .roulette-container { height: 200px; } }
+        .roulette-track { 
+            display: flex; height: 100%; transition: transform 7s cubic-bezier(0.25, 0.1, 0.25, 1); 
+            will-change: transform; backface-visibility: hidden;
+        }
+        .roulette-item {
+            min-width: 160px; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            background: 
+                linear-gradient(135deg, rgba(15, 20, 25, 0.9), rgba(30, 41, 59, 0.8)),
+                radial-gradient(circle at center, var(--agent-glow-color, rgba(255, 70, 85, 0.1)), transparent 60%);
+            border-right: 2px solid var(--agent-border-color, #475569); position: relative; overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .roulette-item::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 30%;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            z-index: 1;
+        }
+        .roulette-item img { 
+            max-width: 100px; max-height: 100px; object-fit: contain; 
+            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.5)); 
+            position: relative;
+            z-index: 2;
+        }
+        .roulette-item .name { 
+            color: #ffffff; 
+            font-weight: 700; 
+            font-size: 1rem; 
+            text-align: center; 
+            margin-top: 8px; 
+            text-shadow: 
+                0 2px 4px rgba(0,0,0,0.9),
+                0 0 3px var(--agent-primary-color, var(--valorant-cyan)),
+                0 1px 0 rgba(255,255,255,0.2);
+            font-family: 'Oswald', sans-serif;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, var(--agent-primary-color, var(--valorant-cyan)), var(--agent-secondary-color, var(--valorant-red)));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 1px 2px rgba(0,0,0,0.7));
+            position: relative;
+            z-index: 3;
+        }
+        .roulette-center {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+            width: 4px; height: 100%; background: var(--gradient-primary); 
+            box-shadow: 0 0 15px var(--theme-primary); 
+            z-index: 10;
+            transition: background 0.3s ease;
+        }
+        .roulette-center::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 8px;
+            height: 8px;
+            background: var(--valorant-gold);
+            border-radius: 50%;
+        }
+        /* Remover animação pesada */
+        .roulette-center::after { display: none; }
+        .roulette-overlay {
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(90deg, rgba(15, 23, 42, 0.9) 0%, transparent 25%, transparent 75%, rgba(15, 23, 42, 0.9) 100%);
+            pointer-events: none; z-index: 5;
+        }
+        /* --- CONTAINER DE SELEÇÃO VALORANT --- */
+        .agent-selection-container {
+            background: 
+                linear-gradient(135deg, rgba(15, 20, 25, 0.8), rgba(31, 35, 38, 0.6)),
+                radial-gradient(circle at 20% 80%, rgba(255, 70, 85, 0.05), transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(0, 212, 245, 0.05), transparent 50%);
+            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--theme-primary);
+            border-radius: 12px;
+            animation: fadeIn 0.8s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+        .agent-selection-container::before {
+            display: none;
+        }
+        .agent-selection-container::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0; height: 1px;
+            background: var(--gradient-primary);
+            box-shadow: 0 0 10px var(--valorant-red);
+        }
+        .agent-selector-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 1rem; }
+        @media (max-width: 639px) { .agent-selector-grid { grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)); gap: 0.75rem; } }
+        .agent-selector-item {
+            position: relative; cursor: pointer; border: 2px solid var(--theme-border);
+            border-radius: 0.5rem; overflow: hidden; transition: transform 0.2s ease, border-color 0.2s ease; 
+            aspect-ratio: 1/1; will-change: transform; backface-visibility: hidden;
+        }
+        .agent-selector-item:hover { transform: scale3d(1.05, 1.05, 1); border-color: #64748b; box-shadow: 0 0 10px rgba(100, 116, 139, 0.5); }
+        .agent-selector-item.selected { 
+            border-color: var(--theme-primary); 
+            box-shadow: 0 0 15px var(--theme-shadow-glow); 
+            transform: scale3d(1.05, 1.05, 1);
+        }
+        .agent-selector-item img { 
+            display: block; width: 100%; height: 100%; object-fit: cover; 
+            transition: transform 0.3s ease; will-change: transform; backface-visibility: hidden;
+        }
+        .agent-selector-item:hover img { transform: scale3d(1.1, 1.1, 1); }
+        .agent-selector-item .overlay {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            background: linear-gradient(to top, rgba(15, 23, 42, 0.95), transparent);
+            padding: 1.5rem 0.25rem 0.25rem; text-align: center;
+        }
+        .agent-selector-item .name { 
+            font-size: 0.75rem; 
+            font-weight: 700; 
+            color: var(--agent-text-color, var(--theme-text-primary)); 
+            text-shadow: 0 0 8px var(--agent-text-color, var(--theme-primary)), 
+                         0 1px 2px rgba(0, 0, 0, 0.8); 
+            white-space: nowrap; 
+            overflow: hidden; 
+            text-overflow: ellipsis;
+            filter: brightness(1.2);
+            transition: all 0.3s ease;
+        }
+        .agent-selector-item .checkbox {
+            position: absolute; top: 6px; right: 6px; width: 22px; height: 22px;
+            background: rgba(15, 23, 42, 0.9); border: 2px solid var(--theme-border);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s ease;
+        }
+        .agent-selector-item.selected .checkbox { background: var(--theme-primary); border-color: var(--theme-primary); }
+        .agent-selector-item.selected .checkbox i { opacity: 1; transform: scale(1); }
+        .agent-selector-item .checkbox i { font-size: 10px; color: white; opacity: 0; transform: scale(0.5); transition: all 0.2s; }
+        #loading-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(10, 15, 29, 0.95); z-index: 9999;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            transition: opacity 0.3s ease; backdrop-filter: blur(5px);
+        }
+        .agent-card-enhanced {
+            position: relative; width: 100%; border-radius: 1rem; overflow: hidden;
+            background-size: cover; background-position: center; border: 2px solid var(--theme-border);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), 0 0 40px var(--theme-shadow-glow);
+            transition: transform 0.3s ease, box-shadow 0.8s ease;
+            z-index: 1000;
+        }
+        .agent-card-enhanced:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8), 0 0 50px var(--theme-shadow-glow);
+        }
+        .agent-card-overlay {
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(to top,
+                rgba(15, 23, 42, 1) 0%, rgba(15, 23, 42, 0.95) 30%,
+                rgba(15, 23, 42, 0.7) 60%, rgba(15, 23, 42, 0.2) 100%
+            );
+            z-index: 1;
+        }
+        .agent-card-content { position: relative; z-index: 2; display: flex; flex-direction: column; height: 100%; }
+        .agent-portrait-container { width: 100%; flex-shrink: 0; }
+        .agent-portrait-enhanced {
+            width: 100%; max-height: 500px; object-fit: cover; object-position: top center;
+            filter: drop-shadow(0 5px 20px rgba(0, 0, 0, 0.5));
+            mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
+            margin-bottom: -80px;
+        }
+        .agent-info { padding: 1.5rem; padding-top: 0; flex-grow: 1; display: flex; flex-direction: column; }
+        .agent-role-name { color: var(--theme-primary); font-size: 1rem; letter-spacing: 1px; transition: color 0.8s ease; }
+        .agent-name { 
+            font-size: 3rem; line-height: 1; color: var(--theme-light); 
+            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.9); 
+            transition: all 0.3s ease;
+        }
+        .agent-role-icon {
+            width: 50px; height: 50px; padding: 8px;
+            background: rgba(15, 23, 42, 0.7); border: 1px solid var(--theme-border);
+            border-radius: 50%;
+        }
+        .agent-description-enhanced {
+            font-size: 0.9rem; color: #cbd5e1; line-height: 1.6; margin: 1rem 0 1.5rem; 
+            border-left: 3px solid var(--theme-primary); padding-left: 1rem;
+            transition: border-color 0.8s ease;
+        }
+        .abilities-container { margin-top: auto; }
+        .abilities-title { font-size: 1.2rem; color: #e2e8f0; margin-bottom: 0.75rem; text-transform: uppercase; }
+        .abilities-grid-enhanced { display: flex; justify-content: space-around; gap: 0.5rem; }
+        .ability-card-enhanced {
+            position: relative; width: 50px; height: 50px;
+            background: rgba(15, 23, 42, 0.8); border: 2px solid var(--theme-border);
+            border-radius: 0.5rem; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: all 0.2s ease;
+        }
+        .ability-card-enhanced:hover, .ability-card-enhanced:focus {
+            border-color: var(--theme-primary); transform: scale(1.1);
+            background: rgba(30, 41, 59, 1);
+        }
+        .ability-icon-enhanced { width: 32px; height: 32px; filter: grayscale(30%); transition: filter 0.2s ease; }
+        .ability-card-enhanced:hover .ability-icon-enhanced, .ability-card-enhanced:focus .ability-icon-enhanced { filter: grayscale(0%); }
+        .ability-tooltip {
+            position: absolute; bottom: 110%; left: 50%; transform: translateX(-50%);
+            width: 240px; background: #1e293b; border: 1px solid var(--theme-border);
+            border-radius: 0.5rem; padding: 0.75rem; font-size: 0.8rem; color: #cbd5e1;
+            opacity: 0; visibility: hidden; transition: opacity 0.2s ease, visibility 0.2s ease;
+            z-index: 20; pointer-events: none; text-align: left;
+        }
+        .ability-tooltip::after {
+            content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+            border-width: 6px; border-style: solid; border-color: #1e293b transparent transparent transparent;
+        }
+        .ability-card-enhanced:first-child > .ability-tooltip { left: 0; transform: translateX(0); }
+        .ability-card-enhanced:first-child > .ability-tooltip::after { left: 25px; }
+        .ability-card-enhanced:last-child > .ability-tooltip { left: auto; right: 0; transform: translateX(0); }
+        .ability-card-enhanced:last-child > .ability-tooltip::after { left: auto; right: 19px; }
+        
+        /* --- ABAS DE CATEGORIA OTIMIZADAS --- */
+        .category-tab {
+            position: relative; display: flex; align-items: center; justify-content: center;
+            padding: 0.75rem 1.5rem; background: rgba(15, 20, 25, 0.8); color: var(--theme-text-secondary);
+            border: 2px solid var(--theme-border); border-radius: 8px;
+            font-weight: 700; font-size: 0.9rem; cursor: pointer; font-family: 'Oswald', sans-serif;
+            transition: all 0.2s ease; letter-spacing: 1px;
+        }
+        .category-tab:hover {
+            background: rgba(51, 65, 85, 0.9); color: var(--theme-text-primary);
+            border-color: #64748b; transform: translateY(-2px);
+        }
+        .category-tab.active {
+            background: var(--gradient-primary);
+            color: white; border-color: var(--theme-primary);
+            box-shadow: 0 0 15px var(--theme-shadow-glow);
+            transform: translateY(-2px);
+        }
+        .category-count {
+            margin-left: 0.5rem; padding: 0.3rem 0.6rem; 
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 12px; font-size: 0.75rem; font-weight: 900;
+            min-width: 1.5rem; text-align: center;
+        }
+        .category-tab.active .category-count { 
+            background: rgba(255, 255, 255, 0.25);
+        }
+        
+        /* --- CORES ESPECÍFICAS DAS FUNÇÕES OTIMIZADAS --- */
+        .category-tab[data-category="Duelist"]:not(.active):hover { 
+            border-color: var(--valorant-red); 
+            color: #fca5a5;
+        }
+        .category-tab[data-category="Duelist"].active { 
+            background: linear-gradient(135deg, var(--valorant-red) 0%, var(--valorant-orange) 100%); 
+        }
+        
+        .category-tab[data-category="Controller"]:not(.active):hover { 
+            border-color: var(--valorant-cyan); 
+            color: #67e8f9;
+        }
+        .category-tab[data-category="Controller"].active { 
+            background: linear-gradient(135deg, var(--valorant-cyan) 0%, var(--valorant-purple) 100%); 
+        }
+        
+        .category-tab[data-category="Initiator"]:not(.active):hover { 
+            border-color: var(--valorant-gold); 
+            color: var(--valorant-gold);
+        }
+        .category-tab[data-category="Initiator"].active { 
+            background: linear-gradient(135deg, var(--valorant-gold) 0%, var(--valorant-orange) 100%); 
+        }
+        
+        .category-tab[data-category="Sentinel"]:not(.active):hover { 
+            border-color: var(--valorant-green); 
+            color: var(--valorant-green);
+        }
+        .category-tab[data-category="Sentinel"].active { 
+            background: linear-gradient(135deg, var(--valorant-green) 0%, var(--valorant-cyan) 100%); 
+        }
+        
+        /* --- EFEITOS OTIMIZADOS --- */
+        @keyframes glitchEffect {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(1px); }
+        }
+        
+        .glitch-text {
+            animation: glitchEffect 0.2s ease-in-out;
+        }
+        
+        /* --- BOTÕES DE AÇÃO OTIMIZADOS --- */
+        .valorant-action-btn {
+            position: relative;
+            font-family: 'Oswald', sans-serif;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.2s ease;
+        }
+        .valorant-action-btn:hover {
+            transform: translateY(-1px);
+        }
+        
+        /* --- EFEITOS DE CARREGAMENTO VALORANT --- */
+        #loading-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: 
+                linear-gradient(135deg, rgba(15, 20, 25, 0.98), rgba(31, 35, 38, 0.95)),
+                radial-gradient(circle at 50% 50%, rgba(255, 70, 85, 0.1), transparent 50%);
+            z-index: 9999;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            transition: opacity 0.3s ease; backdrop-filter: blur(10px);
+        }
+        #loading-overlay i {
+            color: var(--valorant-red);
+            text-shadow: 0 0 20px var(--valorant-red);
+            animation: loadingSpin 1s linear infinite, glowPulse 2s ease-in-out infinite;
+        }
+        #loading-overlay p {
+            color: var(--theme-text-primary);
+            font-family: 'Oswald', sans-serif;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+        @keyframes loadingSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes glowPulse {
+            0%, 100% { text-shadow: 0 0 20px var(--valorant-red); }
+            50% { text-shadow: 0 0 40px var(--valorant-red), 0 0 60px var(--valorant-red); }
+        }
+    </style>
+</head>
+<body class="text-white flex flex-col items-center p-4 relative">
+    
+    <div id="loading-overlay">
+        <i class="fas fa-spinner fa-spin text-5xl text-red-500 mb-4"></i>
+        <p class="text-lg text-slate-300">A carregar agentes...</p>
+    </div>
+
+    <div class="text-center w-full max-w-6xl mx-auto relative z-10">
+        <header class="mb-6 mt-4 main-header">
+            <div class="valorant-logo">
+                <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold text-transparent bg-clip-text tracking-tight valorant-font mb-2 header-gradient">
+                    <i class="fas fa-crosshairs mr-3"></i>ROLETA DE AGENTES
+                </h1>
+            </div>
+            <div class="flex items-center justify-center mt-4">
+                <div class="w-12 h-px bg-gradient-to-r from-transparent via-valorant-red to-transparent mr-4"></div>
+                <span class="text-valorant-cyan font-semibold tracking-widest text-sm">VALORANT</span>
+                <div class="w-12 h-px bg-gradient-to-r from-transparent via-valorant-red to-transparent ml-4"></div>
+            </div>
+            <p class="text-slate-300 mt-3 text-lg font-medium">Escolha os seus agentes e <span class="text-valorant-cyan font-bold">DOMINE</span> o campo de batalha!</p>
+        </header>
+
+        <main id="agent-display" class="w-full flex items-center justify-center my-4 min-h-[45vh] md:min-h-[500px] relative">
+            <div id="initial-state" class="text-center p-6 border-2 border-slate-700 rounded-xl bg-slate-800/30 backdrop-blur-sm w-full max-w-lg transition-all duration-300">
+                <div class="inline-block p-4 rounded-full bg-slate-800/50 mb-5">
+                    <i class="fas fa-question text-4xl text-slate-400"></i>
+                </div>
+                <h2 class="text-2xl font-semibold text-slate-300 mb-2">Roleta pronta para girar</h2>
+                <p class="text-slate-400 max-w-md mx-auto">Use a secção abaixo para escolher os agentes e depois clique em "GIRAR ROLETA".</p>
+            </div>
+            <div id="agent-card" class="hidden w-full max-w-[450px]"></div>
+            
+            <div id="roulette-section" class="hidden w-full">
+                <div class="roulette-container">
+                    <div class="roulette-track" id="roulette-track"></div>
+                    <div class="roulette-overlay"></div>
+                    <div class="roulette-center"></div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="mt-3 mb-6">
+            <button id="spin-button" class="spin-button disabled:from-slate-700 disabled:to-slate-800 disabled:cursor-not-allowed text-white font-bold py-4 px-10 rounded-full text-xl transition-all duration-300 transform hover:scale-105 flex items-center justify-center mx-auto pulse">
+                <span id="button-text" class="flex items-center"><i class="fas fa-sync-alt mr-3"></i> SORTEAR TODOS OS AGENTES</span>
+                <span id="button-spinner" class="hidden flex items-center"><i class="fas fa-spinner fa-spin mr-3"></i> GIRANDO...</span>
+            </button>
+        </footer>
+        
+        <section id="agent-selection-section" class="w-full bg-slate-900/50 p-4 sm:p-6 rounded-xl mt-8 agent-selection-container">
+            <div class="flex flex-col sm:flex-row justify-between items-center mb-4">
+                <h3 class="text-2xl font-bold valorant-font text-slate-200 mb-4 sm:mb-0">ESCOLHA OS AGENTES</h3>
+                <div class="flex space-x-2">
+                    <button id="select-all-btn" class="valorant-action-btn bg-gradient-to-r from-valorant-green to-valorant-cyan text-white font-semibold py-2 px-4 rounded-md text-sm transition-all duration-300 flex items-center border border-valorant-green hover:shadow-lg hover:shadow-valorant-green/25">
+                        <i class="fas fa-check-double mr-2"></i>Todos
+                    </button>
+                    <button id="deselect-all-btn" class="valorant-action-btn bg-gradient-to-r from-valorant-red to-valorant-orange text-white font-semibold py-2 px-4 rounded-md text-sm transition-all duration-300 flex items-center border border-valorant-red hover:shadow-lg hover:shadow-valorant-red/25">
+                        <i class="fas fa-times mr-2"></i>Nenhum
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Abas de Categoria -->
+            <div class="mb-6">
+                <div class="flex flex-wrap justify-center gap-2 mb-4">
+                    <button class="category-tab active" data-category="all">
+                        <i class="fas fa-users mr-2"></i>Todos
+                        <span class="category-count" id="count-all">0</span>
+                    </button>
+                    <button class="category-tab" data-category="Duelist">
+                        <i class="fas fa-crosshairs mr-2"></i>Duelistas
+                        <span class="category-count" id="count-duelist">0</span>
+                    </button>
+                    <button class="category-tab" data-category="Controller">
+                        <i class="fas fa-shield-alt mr-2"></i>Controladores
+                        <span class="category-count" id="count-controller">0</span>
+                    </button>
+                    <button class="category-tab" data-category="Initiator">
+                        <i class="fas fa-bolt mr-2"></i>Iniciadores
+                        <span class="category-count" id="count-initiator">0</span>
+                    </button>
+                    <button class="category-tab" data-category="Sentinel">
+                        <i class="fas fa-eye mr-2"></i>Sentinelas
+                        <span class="category-count" id="count-sentinel">0</span>
+                    </button>
+                </div>
+            </div>
+            
+            <div id="agent-selector-grid" class="agent-selector-grid custom-scrollbar max-h-[400px] overflow-y-auto p-1">
+            </div>
+            <div id="agent-counter" class="mt-4 text-slate-400 text-sm text-center">
+                Agentes selecionados: <span id="counter-value" class="font-bold text-white">0</span>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- ELEMENTOS DOM ---
+            const root = document.documentElement;
+            const spinButton = document.getElementById('spin-button');
+            const buttonText = document.getElementById('button-text');
+            const buttonSpinner = document.getElementById('button-spinner');
+            const agentDisplay = document.getElementById('agent-display');
+            const initialState = document.getElementById('initial-state');
+            const agentCard = document.getElementById('agent-card');
+            const counterValue = document.getElementById('counter-value');
+            const rouletteSection = document.getElementById('roulette-section');
+            const rouletteTrack = document.getElementById('roulette-track');
+            const agentSelectorGrid = document.getElementById('agent-selector-grid');
+            const selectAllBtn = document.getElementById('select-all-btn');
+            const deselectAllBtn = document.getElementById('deselect-all-btn');
+            const loadingOverlay = document.getElementById('loading-overlay');
+
+            // --- ESTADO DA APLICAÇÃO ---
+            let allAgents = [];
+            let selectedAgentUUIDs = new Set();
+            let currentCategory = 'all'; // Categoria ativa atual
+            let renderTimeout = null; // Para debouncing
+            let isRendering = false; // Flag para evitar renders simultâneos
+            const API_URL = 'https://valorant-api.com/v1/agents?language=pt-BR&isPlayableCharacter=true';
+            let animationFrameId = null; // Para controlar o requestAnimationFrame
+
+            // --- FUNÇÕES DE TEMA E EFEITOS ---
+
+            function toPureHex(hexColor) {
+                return `#${hexColor.substring(0, 6)}`;
+            }
+            
+            function updateTheme(agent, isFast = false) {
+                if (!agent || !agent.backgroundGradientColors) return;
+                const colors = agent.backgroundGradientColors.map(toPureHex);
+                const primaryColor = colors[0];
+                const secondaryColor = colors[1] || primaryColor;
+                
+                const transitionDuration = isFast ? '0.3s' : '0.8s';
+                root.style.setProperty('--theme-primary', primaryColor);
+                root.style.setProperty('--theme-secondary', secondaryColor);
+                root.style.setProperty('--theme-darker', colors[3] || '#0a0f1d');
+                root.style.setProperty('--theme-shadow-glow', `${primaryColor}99`);
+                root.style.setProperty('--theme-primary-translucent', `${primaryColor}26`);
+                root.style.setProperty('--theme-scrollbar-thumb', primaryColor);
+                root.style.setProperty('--theme-scrollbar-thumb-hover', secondaryColor);
+
+                // Aplica a transição a todos os elementos que mudam de cor
+                document.querySelectorAll('.main-header h1, .roulette-center, .agent-role-name, .agent-description-enhanced').forEach(el => {
+                    el.style.transitionDuration = transitionDuration;
+                });
+
+                // Força a atualização da scrollbar customizada
+                document.querySelectorAll('.custom-scrollbar').forEach(scroll => {
+                    scroll.style.setProperty('--theme-scrollbar-thumb', primaryColor);
+                    scroll.style.setProperty('--theme-scrollbar-thumb-hover', secondaryColor);
+                });
+            }
+
+            // --- FUNÇÕES PRINCIPAIS ---
+
+            async function fetchAgents() {
+                const cachedAgents = localStorage.getItem('valorantAgents');
+                const cacheTime = localStorage.getItem('valorantAgentsTime');
+                
+                if (cachedAgents && cacheTime && (Date.now() - cacheTime < 86400000)) {
+                    allAgents = JSON.parse(cachedAgents);
+                    return;
+                }
+
+                try {
+                    const response = await fetch(API_URL);
+                    if (!response.ok) throw new Error(`API Error: ${response.statusText}`);
+                    const data = await response.json();
+                    allAgents = data.data;
+                    localStorage.setItem('valorantAgents', JSON.stringify(allAgents));
+                    localStorage.setItem('valorantAgentsTime', Date.now());
+                } catch (error) {
+                    console.error("Falha ao buscar agentes:", error);
+                    agentDisplay.innerHTML = `<div class="text-center p-8 bg-red-900/30 border border-red-700 rounded-xl">
+                        <h2 class="text-xl font-semibold text-red-300">Erro de Conexão</h2>
+                        <p class="text-red-200">Não foi possível carregar os agentes. Tente novamente mais tarde.</p>
+                    </div>`;
+                }
+            }
+
+            // --- FUNÇÕES DE PERFORMANCE ---
+            function debounce(func, wait) {
+                return function executedFunction(...args) {
+                    const later = () => {
+                        clearTimeout(renderTimeout);
+                        func(...args);
+                    };
+                    clearTimeout(renderTimeout);
+                    renderTimeout = setTimeout(later, wait);
+                };
+            }
+
+            function createAgentElement(agent) {
+                const isSelected = selectedAgentUUIDs.has(agent.uuid);
+                const item = document.createElement('div');
+                item.className = `agent-selector-item ${isSelected ? 'selected' : ''}`;
+                item.dataset.uuid = agent.uuid;
+                
+                // Aplicar cores específicas do agente usando o mesmo sistema da roleta
+                if (agent.backgroundGradientColors && agent.backgroundGradientColors.length > 0) {
+                    const agentColor = toPureHex(agent.backgroundGradientColors[0]);
+                    item.style.setProperty('--agent-text-color', agentColor);
+                }
+                
+                // Lazy loading otimizado
+                const img = document.createElement('img');
+                img.alt = agent.displayName;
+                img.loading = 'lazy';
+                img.decoding = 'async';
+                img.style.opacity = '0';
+                img.style.transition = 'opacity 0.3s ease';
+                
+                img.onload = () => {
+                    img.style.opacity = '1';
+                };
+                img.onerror = () => {
+                    img.src = 'https://placehold.co/200x200/1e293b/ffffff?text=Sem+Imagem';
+                };
+                img.src = agent.displayIcon;
+                
+                const overlay = document.createElement('div');
+                overlay.className = 'overlay';
+                overlay.innerHTML = `<span class="name">${agent.displayName}</span>`;
+                
+                const checkbox = document.createElement('div');
+                checkbox.className = 'checkbox';
+                checkbox.innerHTML = '<i class="fas fa-check"></i>';
+                
+                item.appendChild(img);
+                item.appendChild(overlay);
+                item.appendChild(checkbox);
+                
+                // Event listener otimizado
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    toggleAgentSelection(agent.uuid);
+                }, { passive: true });
+                
+                return item;
+            }
+
+            function renderAgentSelector() {
+                if (isRendering) return;
+                isRendering = true;
+                
+                // Mapear nomes das funções da API para nomes das abas
+                const roleMapping = {
+                    'all': () => true,
+                    'Duelist': (agent) => agent.role.displayName === 'Duelista',
+                    'Controller': (agent) => agent.role.displayName === 'Controlador',  
+                    'Initiator': (agent) => agent.role.displayName === 'Iniciador',
+                    'Sentinel': (agent) => agent.role.displayName === 'Sentinela'
+                };
+                
+                const filteredAgents = currentCategory === 'all' 
+                    ? allAgents 
+                    : allAgents.filter(roleMapping[currentCategory] || (() => false));
+                
+                // Usar DocumentFragment para melhor performance
+                const fragment = document.createDocumentFragment();
+                filteredAgents.forEach(agent => {
+                    fragment.appendChild(createAgentElement(agent));
+                });
+                
+                // Limpar e inserir de uma vez
+                agentSelectorGrid.innerHTML = '';
+                agentSelectorGrid.appendChild(fragment);
+                
+                // Atualizar contadores de forma assíncrona
+                requestAnimationFrame(() => {
+                    updateCounter();
+                    updateCategoryTabs();
+                    isRendering = false;
+                });
+            }
+
+            // Versão otimizada com debouncing
+            const debouncedRender = debounce(renderAgentSelector, 50);
+
+            function toggleAgentSelection(uuid) {
+                const item = agentSelectorGrid.querySelector(`[data-uuid='${uuid}']`);
+                if (!item) return;
+                
+                if (selectedAgentUUIDs.has(uuid)) {
+                    selectedAgentUUIDs.delete(uuid);
+                    item.classList.remove('selected');
+                } else {
+                    selectedAgentUUIDs.add(uuid);
+                    item.classList.add('selected');
+                }
+                
+                saveSelectionToLocalStorage();
+                
+                // Atualização otimizada dos contadores
+                requestAnimationFrame(() => {
+                    updateCounter();
+                    updateCategoryTabs();
+                });
+            }
+            
+            function updateCounter() {
+                counterValue.textContent = selectedAgentUUIDs.size;
+                spinButton.disabled = selectedAgentUUIDs.size === 0;
+                spinButton.classList.toggle('pulse', selectedAgentUUIDs.size > 0);
+            }
+
+            function updateCategoryTabs() {
+                // Cache dos elementos DOM
+                const countElements = {
+                    all: document.getElementById('count-all'),
+                    duelist: document.getElementById('count-duelist'),
+                    controller: document.getElementById('count-controller'),
+                    initiator: document.getElementById('count-initiator'),
+                    sentinel: document.getElementById('count-sentinel')
+                };
+                
+                // Atualizar contadores por categoria
+                const roleCounts = {
+                    all: selectedAgentUUIDs.size,
+                    Duelist: 0,
+                    Controller: 0,
+                    Initiator: 0,
+                    Sentinel: 0
+                };
+                
+                // Usar forEach mais eficiente
+                for (const agent of allAgents) {
+                    if (selectedAgentUUIDs.has(agent.uuid)) {
+                        const role = agent.role.displayName;
+                        // Mapear nomes em português para chaves em inglês
+                        switch (role) {
+                            case 'Duelista':
+                                roleCounts.Duelist++;
+                                break;
+                            case 'Controlador':
+                                roleCounts.Controller++;
+                                break;
+                            case 'Iniciador':
+                                roleCounts.Initiator++;
+                                break;
+                            case 'Sentinela':
+                                roleCounts.Sentinel++;
+                                break;
+                        }
+                    }
+                }
+                
+                // Atualizar os contadores visuais de uma vez
+                countElements.all.textContent = roleCounts.all;
+                countElements.duelist.textContent = roleCounts.Duelist;
+                countElements.controller.textContent = roleCounts.Controller;
+                countElements.initiator.textContent = roleCounts.Initiator;
+                countElements.sentinel.textContent = roleCounts.Sentinel;
+            }
+            
+            function switchCategory(category) {
+                if (currentCategory === category) return; // Evitar re-render desnecessário
+                
+                currentCategory = category;
+                
+                // Atualizar abas ativas de forma otimizada
+                const tabs = document.querySelectorAll('.category-tab');
+                tabs.forEach(tab => {
+                    if (tab.dataset.category === category) {
+                        tab.classList.add('active');
+                    } else {
+                        tab.classList.remove('active');
+                    }
+                });
+                
+                // Atualizar texto do botão baseado na categoria
+                const buttonText = document.getElementById('button-text');
+                const categoryNames = {
+                    'all': 'TODOS OS AGENTES',
+                    'Duelist': 'DUELISTAS',
+                    'Controller': 'CONTROLADORES', 
+                    'Initiator': 'INICIADORES',
+                    'Sentinel': 'SENTINELAS'
+                };
+                buttonText.innerHTML = `<i class="fas fa-sync-alt mr-3"></i> SORTEAR ${categoryNames[category]}`;
+                
+                debouncedRender();
+            }
+
+            function saveSelectionToLocalStorage() {
+                localStorage.setItem('selectedAgentUUIDs', JSON.stringify(Array.from(selectedAgentUUIDs)));
+            }
+
+            function loadSelectionFromLocalStorage() {
+                const savedSelection = localStorage.getItem('selectedAgentUUIDs');
+                if (savedSelection) {
+                    selectedAgentUUIDs = new Set(JSON.parse(savedSelection));
+                } else {
+                    selectedAgentUUIDs = new Set(allAgents.map(a => a.uuid));
+                    saveSelectionToLocalStorage();
+                }
+            }
+
+            function displayAgent(agent) {
+                const displayAbilities = agent.abilities.filter(ability => ability.displayIcon);
+                updateTheme(agent, false); // Transição lenta para o resultado final
+                
+                // Obter cores específicas do agente
+                const agentColors = agent.backgroundGradientColors || ['ff4655', 'fd8e52'];
+                const primaryColor = `#${agentColors[0]}`;
+                const secondaryColor = agentColors[1] ? `#${agentColors[1]}` : primaryColor;
+
+                agentCard.innerHTML = `
+                    <div class="agent-card-enhanced" style="background-image: url('${agent.background}'); --agent-theme-primary: ${primaryColor}; --agent-theme-secondary: ${secondaryColor};">
+                        <div class="agent-card-overlay"></div>
+                        <div class="agent-card-content">
+                            <div class="agent-portrait-container">
+                                <img src="${agent.fullPortrait}" alt="Retrato de ${agent.displayName}" class="agent-portrait-enhanced" onerror="this.src='https://placehold.co/600/0f172a/ffffff?text=Agente';">
+                            </div>
+                            <div class="agent-info">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <span class="agent-role-name valorant-font">${agent.role.displayName}</span>
+                                        <h2 class="agent-name valorant-font" style="background: linear-gradient(135deg, ${primaryColor}, ${secondaryColor}); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 0 2px 8px rgba(0,0,0,0.8);">${agent.displayName.toUpperCase()}</h2>
+                                    </div>
+                                    <img src="${agent.role.displayIcon}" alt="${agent.role.displayName}" class="agent-role-icon" onerror="this.style.display='none'">
+                                </div>
+                                <p class="agent-description-enhanced">${agent.description}</p>
+                                <div class="abilities-container">
+                                    <h3 class="abilities-title valorant-font">Habilidades</h3>
+                                    <div class="abilities-grid-enhanced">
+                                        ${displayAbilities.map(ability => `
+                                            <div class="ability-card-enhanced group" tabindex="0">
+                                                <img src="${ability.displayIcon}" alt="${ability.displayName}" class="ability-icon-enhanced" onerror="this.style.display='none'">
+                                                <div class="ability-tooltip group-hover:opacity-100 group-hover:visible group-focus:opacity-100 group-focus:visible">
+                                                    <div class="font-bold mb-1">${ability.displayName}</div>
+                                                    <p class="text-xs">${ability.description}</p>
+                                                </div>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                agentCard.classList.remove('hidden', 'card-enter-animation');
+                void agentCard.offsetWidth;
+                agentCard.classList.add('card-enter-animation');
+            }
+
+            function spinRoulette() {
+                // Filtrar agentes baseado na categoria ativa E nos selecionados
+                let availableAgents;
+                if (currentCategory === 'all') {
+                    availableAgents = allAgents.filter(agent => selectedAgentUUIDs.has(agent.uuid));
+                } else {
+                    // Mapear categoria para nome da função em português
+                    const roleMapping = {
+                        'Duelist': 'Duelista',
+                        'Controller': 'Controlador',
+                        'Initiator': 'Iniciador',
+                        'Sentinel': 'Sentinela'
+                    };
+                    const targetRole = roleMapping[currentCategory];
+                    availableAgents = allAgents.filter(agent => 
+                        selectedAgentUUIDs.has(agent.uuid) && agent.role.displayName === targetRole
+                    );
+                }
+
+                if (availableAgents.length === 0) {
+                    const initialStateText = document.querySelector('#initial-state p');
+                    initialStateText.textContent = `Selecione pelo menos um agente na categoria ${currentCategory === 'all' ? 'geral' : currentCategory} para poder girar a roleta!`;
+                    initialState.classList.add('border-red-500/50');
+                    setTimeout(() => {
+                        initialStateText.textContent = 'Use a secção abaixo para escolher os agentes e depois clique em "GIRAR ROLETA".';
+                        initialState.classList.remove('border-red-500/50');
+                    }, 3000);
+                    return;
+                }
+
+                spinButton.disabled = true;
+                buttonText.classList.add('hidden');
+                buttonSpinner.classList.remove('hidden');
+                initialState.classList.add('hidden');
+                agentCard.classList.add('hidden');
+                rouletteSection.classList.remove('hidden');
+
+                const itemWidth = 160;
+                const repetitionCount = 5;
+                let rouletteItems = [];
+                for (let i = 0; i < repetitionCount; i++) {
+                    rouletteItems.push(...[...availableAgents].sort(() => Math.random() - 0.5));
+                }
+                
+                const winner = availableAgents[Math.floor(Math.random() * availableAgents.length)];
+                const winnerIndex = rouletteItems.length - Math.floor(availableAgents.length / 2) - 1;
+                rouletteItems[winnerIndex] = winner;
+                
+                rouletteTrack.innerHTML = rouletteItems.map(agent => {
+                    const agentColors = agent.backgroundGradientColors || ['#ff4655', '#fd8e52'];
+                    const primaryColor = `#${agentColors[0]}`;
+                    const secondaryColor = agentColors[1] ? `#${agentColors[1]}` : primaryColor;
+                    const glowColor = `${primaryColor}33`; // 20% opacity
+                    const borderColor = `${primaryColor}66`; // 40% opacity
+                    
+                    return `
+                        <div class="roulette-item" style="
+                            --agent-primary-color: ${primaryColor};
+                            --agent-secondary-color: ${secondaryColor};
+                            --agent-glow-color: ${glowColor};
+                            --agent-border-color: ${borderColor};
+                        ">
+                            <img src="${agent.displayIcon}" alt="${agent.displayName}" loading="lazy" onerror="this.style.display='none'"/>
+                            <div class="name">${agent.displayName}</div>
+                        </div>
+                    `;
+                }).join('');
+
+                const randomOffset = (Math.random() - 0.5) * (itemWidth * 0.8);
+                const finalPosition = -(winnerIndex * itemWidth - (rouletteSection.clientWidth / 2) + (itemWidth / 2) + randomOffset);
+
+                rouletteTrack.style.transition = 'none';
+                rouletteTrack.style.transform = 'translateX(0)';
+                
+                let lastCenteredAgentUUID = null;
+                function liveThemeUpdater() {
+                    const currentTransform = new DOMMatrix(getComputedStyle(rouletteTrack).transform);
+                    const currentX = currentTransform.m41;
+                    const centerOffset = rouletteSection.clientWidth / 2 - itemWidth / 2;
+                    const centeredIndex = Math.round((Math.abs(currentX) + centerOffset) / itemWidth);
+                    
+                    if (centeredIndex >= 0 && centeredIndex < rouletteItems.length) {
+                        const centeredAgent = rouletteItems[centeredIndex];
+                        if (centeredAgent && centeredAgent.uuid !== lastCenteredAgentUUID) {
+                            updateTheme(centeredAgent, true); // Transição rápida durante o giro
+                            lastCenteredAgentUUID = centeredAgent.uuid;
+                        }
+                    }
+                    animationFrameId = requestAnimationFrame(liveThemeUpdater);
+                }
+
+                setTimeout(() => {
+                    rouletteTrack.style.transition = 'transform 7s cubic-bezier(0.25, 0.1, 0.25, 1)';
+                    rouletteTrack.style.transform = `translateX(${finalPosition}px)`;
+                    animationFrameId = requestAnimationFrame(liveThemeUpdater);
+                }, 20);
+
+                setTimeout(() => {
+                    cancelAnimationFrame(animationFrameId);
+                    rouletteSection.classList.add('hidden');
+                    displayAgent(winner);
+                    
+                    spinButton.disabled = false;
+                    buttonText.classList.remove('hidden');
+                    buttonSpinner.classList.add('hidden');
+                }, 7000);
+            }
+            
+            // --- EVENT LISTENERS OTIMIZADOS ---
+            let lastClickTime = 0;
+            const clickThrottle = 100; // 100ms entre cliques
+            
+            function throttledSelectAll() {
+                const now = Date.now();
+                if (now - lastClickTime < clickThrottle) return;
+                lastClickTime = now;
+                
+                let agentsToSelect = [];
+                if (currentCategory === 'all') {
+                    agentsToSelect = allAgents;
+                } else {
+                    const roleMapping = {
+                        'Duelist': 'Duelista',
+                        'Controller': 'Controlador',
+                        'Initiator': 'Iniciador', 
+                        'Sentinel': 'Sentinela'
+                    };
+                    const targetRole = roleMapping[currentCategory];
+                    agentsToSelect = allAgents.filter(agent => agent.role.displayName === targetRole);
+                }
+                agentsToSelect.forEach(agent => selectedAgentUUIDs.add(agent.uuid));
+                saveSelectionToLocalStorage();
+                debouncedRender();
+            }
+            
+            function throttledDeselectAll() {
+                const now = Date.now();
+                if (now - lastClickTime < clickThrottle) return;
+                lastClickTime = now;
+                
+                let agentsToDeselect = [];
+                if (currentCategory === 'all') {
+                    agentsToDeselect = allAgents;
+                } else {
+                    const roleMapping = {
+                        'Duelist': 'Duelista',
+                        'Controller': 'Controlador',
+                        'Initiator': 'Iniciador',
+                        'Sentinel': 'Sentinela'
+                    };
+                    const targetRole = roleMapping[currentCategory];
+                    agentsToDeselect = allAgents.filter(agent => agent.role.displayName === targetRole);
+                }
+                agentsToDeselect.forEach(agent => selectedAgentUUIDs.delete(agent.uuid));
+                saveSelectionToLocalStorage();
+                debouncedRender();
+            }
+            
+            spinButton.addEventListener('click', spinRoulette);
+            selectAllBtn.addEventListener('click', throttledSelectAll, { passive: true });
+            deselectAllBtn.addEventListener('click', throttledDeselectAll, { passive: true });
+            
+            // Event listeners para as abas de categoria com delegação de eventos
+            document.addEventListener('click', (e) => {
+                const categoryTab = e.target.closest('.category-tab');
+                if (categoryTab) {
+                    e.preventDefault();
+                    const category = categoryTab.dataset.category;
+                    if (category) {
+                        switchCategory(category);
+                    }
+                }
+            }, { passive: false });
+
+            // --- INICIALIZAÇÃO OTIMIZADA ---
+            async function initialize() {
+                // Mostrar loading
+                loadingOverlay.style.display = 'flex';
+                
+                try {
+                    await fetchAgents();
+                    loadSelectionFromLocalStorage();
+                    
+                    // Inicializar interface de forma assíncrona
+                    await new Promise(resolve => {
+                        requestAnimationFrame(() => {
+                            updateCategoryTabs(); // Atualizar contadores das abas
+                            debouncedRender(); // Usar versão otimizada
+                            resolve();
+                        });
+                    });
+                    
+                } catch (error) {
+                    console.error('Erro na inicialização:', error);
+                } finally {
+                    // Ocultar loading com transição suave
+                    loadingOverlay.style.opacity = '0';
+                    setTimeout(() => {
+                        loadingOverlay.style.display = 'none';
+                    }, 300);
+                }
+            }
+
+            initialize();
+        });
+    </script>
+</body>
+</html>
